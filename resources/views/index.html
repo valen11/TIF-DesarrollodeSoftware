@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema Electoral</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #ebe8e8;
+    }
+    header {
+      background: #007acc;
+      color: rgb(255, 255, 255);
+      padding: 10px;
+      text-align: center;
+    }
+    nav button {
+      margin: 5px;
+      padding: 8px 12px;
+      background: #eee;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    nav button:hover { background: #ccc; }
+    section {
+      display: none;
+      padding: 20px;
+      background: white;
+      margin: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th { background: #e0e0e0; }
+    input, select {
+      padding: 5px;
+      margin: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Sistema Electoral</h1>
+    <nav>
+      <button onclick="mostrar('panel')">Panel</button>
+      <button onclick="mostrar('provincias')">Provincias</button>
+      <button onclick="mostrar('mesas')">Mesas</button>
+    </nav>
+  </header>
+
+  <!-- PANELL -->
+  <section id="panel">
+    <h2>Resumen General</h2>
+    <p><b>Total de provincias:</b> <span id="totalProvincias">0</span></p>
+    <p><b>Total de mesas:</b> <span id="totalMesas">0</span></p>
+  </section>
+
+  <!-- PROVINCIAS -->
+  <section id="provincias">
+    <h2>Registrar Provincia</h2>
+    <input type="text" id="nombreProvincia" placeholder="Nombre de provincia">
+    <button onclick="agregarProvincia()">Agregar</button>
+
+    <h3>Provincias registradas</h3>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Nombre</th></tr>
+      </thead>
+      <tbody id="tablaProvincias"></tbody>
+    </table>
+  </section>
+
+  <!-- MESAS -->
+  <section id="mesas">
+    <h2>Registrar Mesa</h2>
+    <select id="provinciaMesa"></select>
+    <input type="number" id="electoresMesa" placeholder="Electores">
+    <input type="number" id="votosMesa" placeholder="Votos emitidos">
+    <button onclick="agregarMesa()">Guardar</button>
+
+    <h3>Mesas registradas</h3>
+    <table>
+      <thead>
+        <tr><th>Provincia</th><th>Electores</th><th>Votos</th><th>Participación %</th></tr>
+      </thead>
+      <tbody id="tablaMesas"></tbody>
+    </table>
+  </section>
+
+  <script>
+    // Datos simulados
+    let provincias = [
+  "Catamarca",
+  "Chaco",
+  "Chubut",
+  "Córdoba",
+  "Corrientes",
+  "Entre Ríos",
+  "Formosa",
+  "Jujuy",
+  "La Pampa",
+  "La Rioja",
+  "Mendoza",
+  "Misiones",
+  "Neuquén",
+  "Río Negro",
+  "Salta",
+  "San Juan",
+  "San Luis",
+  "Santa Cruz",
+  "Santa Fe",
+  "Santiago del Estero",
+  "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+  "Tucumán"
+];
+
+    let mesas = [];
+
+    // Mostrar sección
+    function mostrar(id) {
+      document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+      actualizarResumen();
+      actualizarSelectProvincias();
+    }
+    mostrar('panel'); // mostrar por defecto
+
+    // Agregar provincia
+    function agregarProvincia() {
+      let nombre = document.getElementById('nombreProvincia').value.trim();
+      if (!nombre) return alert("Escribí un nombre de provincia.");
+      provincias.push(nombre);
+      document.getElementById('nombreProvincia').value = "";
+      actualizarTablaProvincias();
+      actualizarResumen();
+      actualizarSelectProvincias();
+    }
+
+    function actualizarTablaProvincias() {
+      let tabla = document.getElementById('tablaProvincias');
+      tabla.innerHTML = provincias.map((p, i) => `<tr><td>${i+1}</td><td>${p}</td></tr>`).join('');
+    }
+
+    // Agregar mesa
+    function agregarMesa() {
+      let prov = document.getElementById('provinciaMesa').value;
+      let elect = parseInt(document.getElementById('electoresMesa').value);
+      let votos = parseInt(document.getElementById('votosMesa').value);
+      if (!prov || !elect || !votos) return alert("Completá todos los campos.");
+      if (votos > elect) return alert("Los votos no pueden superar a los electores.");
+
+      mesas.push({ provincia: prov, electores: elect, votos: votos });
+      document.getElementById('electoresMesa').value = "";
+      document.getElementById('votosMesa').value = "";
+      actualizarTablaMesas();
+      actualizarResumen();
+    }
+
+    function actualizarTablaMesas() {
+      let tabla = document.getElementById('tablaMesas');
+      tabla.innerHTML = mesas.map(m => {
+        let part = ((m.votos / m.electores) * 100).toFixed(1);
+        return `<tr><td>${m.provincia}</td><td>${m.electores}</td><td>${m.votos}</td><td>${part}%</td></tr>`;
+      }).join('');
+    }
+
+    function actualizarSelectProvincias() {
+      let sel = document.getElementById('provinciaMesa');
+      sel.innerHTML = provincias.map(p => `<option>${p}</option>`).join('');
+    }
+
+    function actualizarResumen() {
+      document.getElementById('totalProvincias').textContent = provincias.length;
+      document.getElementById('totalMesas').textContent = mesas.length;
+    }
+    
+  </script>
+</body>
+</html>
+
+<!---------------------------------------------------------------->
