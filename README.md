@@ -1,154 +1,88 @@
+🧩 Requisitos previos
 
-# 🚀 Proyecto Laravel sin Base de Datos
+Antes de comenzar, asegurate de tener instaladas las siguientes herramientas:
 
-Este proyecto demuestra cómo crear y ejecutar una aplicación básica en **Laravel** sin necesidad de conectar una base de datos.  
-Ideal para prácticas, demostraciones o pequeños sistemas que no requieren persistencia de datos.
+1. PHP (>= 8.1)
 
----
+Laravel requiere PHP 8.1 o superior.
+Podés verificar la versión con:
 
-## 🧩 Requisitos previos
+php -v
 
-Asegurate de tener instaladas las siguientes herramientas:
 
-- **PHP** (>= 8.1)
-  ```bash
-  php -v
-````
+Si no lo tenés, instalalo con:
 
-* **Composer**
+sudo apt update
+sudo apt install php php-cli php-mbstring php-xml php-bcmath php-zip php-curl unzip -y
 
-  ```bash
-  composer -v
-  ```
+2. Composer
 
-> 💡 No es necesario instalar MySQL, MariaDB ni ningún motor de base de datos.
+Composer es el administrador de dependencias de PHP (como npm para Node.js).
 
----
+Instalalo con:
 
-## 🛠️ Crear el proyecto
+sudo apt install composer -y
 
-Podés crear un nuevo proyecto Laravel de dos maneras:
 
-### Opción 1 — Usando Composer directamente
+Verificá la instalación:
 
-```bash
-composer create-project laravel/laravel nombre-proyecto
-```
+composer -V
 
-Ejemplo:
+3. Git (opcional)
 
-```bash
-composer create-project laravel/laravel mi-app
-```
+Si vas a clonar el proyecto desde GitHub:
 
-### Opción 2 — Usando el instalador de Laravel (opcional)
+sudo apt install git -y
 
-```bash
-composer global require laravel/installer
-laravel new mi-app
-```
+⚙️ Clonar el proyecto
 
----
+Cloná el repositorio desde GitHub (reemplazá la URL con la tuya):
 
-## 📂 Entrar al directorio del proyecto
+git clone https://github.com/usuario/nombre-del-proyecto.git
 
-```bash
-cd mi-app
-```
 
----
+Entrá al directorio del proyecto:
 
-## 🖥️ Iniciar el servidor local
+cd nombre-del-proyecto
 
-Ejecutá el siguiente comando:
+📦 Instalar dependencias
 
-```bash
+Instalá las dependencias de Laravel:
+
+composer install 
+
+
+Si el proyecto incluye un archivo .env.example, copialo para crear el archivo de entorno:
+
+cp .env.example .env ▶️ Ejecutar el servidor de desarrollo
+
+Iniciá el servidor local de Laravel con:
+
 php artisan serve
-```
 
-Esto iniciará un servidor en:
 
-```
+Luego abrí en tu navegador la dirección que aparece, normalmente:
+
+http://127.0.0.1:8000  
+
+
+▶️ Ejecutar el servidor de desarrollo
+
+Iniciá el servidor local de Laravel con:
+
+php artisan serve
+
+
+Luego abrí en tu navegador la dirección que aparece, normalmente:
+
 http://127.0.0.1:8000
-```
 
-Abrí esa URL en el navegador para ver la página de bienvenida de Laravel 🎉
+| Acción                | Comando                    |
+| --------------------- | -------------------------- |
+| Instalar dependencias | `composer install`         |
+| Limpiar cachés        | `php artisan cache:clear`  |
+| Crear clave de app    | `php artisan key:generate` |
+| Ejecutar servidor     | `php artisan serve`        |
+| Ver rutas             | `php artisan route:list`   |
 
----
 
-## 🧾 Crear una ruta de ejemplo
-
-Editá el archivo `routes/web.php` y agregá:
-
-```php
-Route::get('/saludo', function () {
-    return '¡Hola desde Laravel sin base de datos! 😄';
-});
-```
-
-Abrí en el navegador:
-
-```
-http://127.0.0.1:8000/saludo
-```
-
----
-
-## 💡 Ejemplo con datos simulados
-
-Podés mostrar datos sin usar una base de datos, simplemente usando arrays.
-
-### Ruta:
-
-```php
-Route::get('/productos', function () {
-    $productos = [
-        ['nombre' => 'Camiseta', 'precio' => 2500],
-        ['nombre' => 'Pantalón', 'precio' => 4200],
-        ['nombre' => 'Zapatillas', 'precio' => 7800],
-    ];
-
-    return view('productos', ['productos' => $productos]);
-});
-```
-
-### Vista (`resources/views/home.blade.php`):
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Productos</title>
-</head>
-<body>
-    <h1>Productos disponibles</h1>
-    <ul>
-        @foreach ($productos as $p)
-            <li>{{ $p['nombre'] }} - ${{ $p['precio'] }}</li>
-        @endforeach
-    </ul>
-</body>
-</html>
-```
-
----
-
-## 📁 Estructura básica del proyecto
-
-```
-mi-app/
-├── app/
-├── bootstrap/
-├── config/
-├── public/
-├── resources/
-│   └── views/
-├── routes/
-│   └── web.php
-├── storage/
-├── .env
-└── artisan
-```
-
-¿Querés que te lo prepare como archivo descargable (`README.md`) para poner directo en tu carpeta del proyecto?
-```
