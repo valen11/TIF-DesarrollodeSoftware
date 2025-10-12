@@ -1,61 +1,154 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# 🚀 Proyecto Laravel sin Base de Datos
 
-## About Laravel
+Este proyecto demuestra cómo crear y ejecutar una aplicación básica en **Laravel** sin necesidad de conectar una base de datos.  
+Ideal para prácticas, demostraciones o pequeños sistemas que no requieren persistencia de datos.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🧩 Requisitos previos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Asegurate de tener instaladas las siguientes herramientas:
 
-## Learning Laravel
+- **PHP** (>= 8.1)
+  ```bash
+  php -v
+````
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* **Composer**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+  ```bash
+  composer -v
+  ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+> 💡 No es necesario instalar MySQL, MariaDB ni ningún motor de base de datos.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🛠️ Crear el proyecto
 
-### Premium Partners
+Podés crear un nuevo proyecto Laravel de dos maneras:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Opción 1 — Usando Composer directamente
 
-## Contributing
+```bash
+composer create-project laravel/laravel nombre-proyecto
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Ejemplo:
 
-## Code of Conduct
+```bash
+composer create-project laravel/laravel mi-app
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Opción 2 — Usando el instalador de Laravel (opcional)
 
-## Security Vulnerabilities
+```bash
+composer global require laravel/installer
+laravel new mi-app
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 📂 Entrar al directorio del proyecto
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+cd mi-app
+```
+
+---
+
+## 🖥️ Iniciar el servidor local
+
+Ejecutá el siguiente comando:
+
+```bash
+php artisan serve
+```
+
+Esto iniciará un servidor en:
+
+```
+http://127.0.0.1:8000
+```
+
+Abrí esa URL en el navegador para ver la página de bienvenida de Laravel 🎉
+
+---
+
+## 🧾 Crear una ruta de ejemplo
+
+Editá el archivo `routes/web.php` y agregá:
+
+```php
+Route::get('/saludo', function () {
+    return '¡Hola desde Laravel sin base de datos! 😄';
+});
+```
+
+Abrí en el navegador:
+
+```
+http://127.0.0.1:8000/saludo
+```
+
+---
+
+## 💡 Ejemplo con datos simulados
+
+Podés mostrar datos sin usar una base de datos, simplemente usando arrays.
+
+### Ruta:
+
+```php
+Route::get('/productos', function () {
+    $productos = [
+        ['nombre' => 'Camiseta', 'precio' => 2500],
+        ['nombre' => 'Pantalón', 'precio' => 4200],
+        ['nombre' => 'Zapatillas', 'precio' => 7800],
+    ];
+
+    return view('productos', ['productos' => $productos]);
+});
+```
+
+### Vista (`resources/views/home.blade.php`):
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Productos</title>
+</head>
+<body>
+    <h1>Productos disponibles</h1>
+    <ul>
+        @foreach ($productos as $p)
+            <li>{{ $p['nombre'] }} - ${{ $p['precio'] }}</li>
+        @endforeach
+    </ul>
+</body>
+</html>
+```
+
+---
+
+## 📁 Estructura básica del proyecto
+
+```
+mi-app/
+├── app/
+├── bootstrap/
+├── config/
+├── public/
+├── resources/
+│   └── views/
+├── routes/
+│   └── web.php
+├── storage/
+├── .env
+└── artisan
+```
+
+¿Querés que te lo prepare como archivo descargable (`README.md`) para poner directo en tu carpeta del proyecto?
+```
